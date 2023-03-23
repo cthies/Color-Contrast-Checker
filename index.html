@@ -1,0 +1,356 @@
+<html>
+
+<head>
+
+    <style>
+        :root {
+            --main-bg: #dddddd;
+            --text: #282c34;
+            --button-bg: #003b49;
+            --button-text: #d6d2c4;
+            --link: #5d3754;
+        }
+
+        body {
+            font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+            line-height: 1.3;
+            padding: 15px;
+        }
+
+        .colorList {
+            height: 80vh;
+            padding: 20px;
+            background: var(--main-bg);
+            color: var(--text);
+        }
+
+
+        button {
+            all: unset;
+            padding: 10px 20px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            cursor: pointer;
+        }
+
+        button:active,
+        button:focus {
+            opacity: 1;
+            outline: 1px solid var(--link);
+            cursor: pointer;
+        }
+
+        a {
+            color: var(--link);
+        }
+
+        a:hover {
+            color: var(--button-bg);
+        }
+
+        .primary {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+        }
+
+
+        .secondary {
+            color: var(--button-bg);
+            background-color: var(--button-text);
+        }
+
+        /* ratio check*/
+        .fail {
+            color: red;
+        }
+
+        .pass {
+            color: green;
+        }
+
+        /*form colorPicker*/
+        form {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .color-picker-item {
+            text-align: center;
+            position: relative;
+            padding: 20px;
+            min-width: 130px;
+        }
+
+
+        .color-picker-item label {
+            position: relative;
+            z-index: 3;
+            -webkit-filter: invert(100%);
+            filter: invert(100%);
+        }
+
+        .color-picker-item:nth-child(1) label {
+            color: var(--main-bg);
+        }
+
+        .color-picker-item:nth-child(2) label {
+            color: var(--text);
+        }
+
+        .color-picker-item:nth-child(3) label {
+            color: var(--button-bg);
+        }
+
+        .color-picker-item:nth-child(4) label {
+            color: var(--button-text);
+        }
+
+        .color-picker-item:nth-child(5) label {
+            color: var(--link);
+        }
+
+
+        .color-picker-item input {
+            margin: 0 15px;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .resultWrapper {
+          display: flex;
+          flex-wrap: wrap;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Color Scheme Contrast Checker</h1>
+    <p>
+        <strong>WCAG 2.0 level AA</strong> requires a contrast ratio of at least <strong>4.5:1 for normal text</strong>
+        and 3:1 for large text. <br>
+        WCAG 2.1 requires a contrast ratio of at least 3:1 for graphics and user interface components (such as form
+        input borders). <br>
+        <strong>WCAG Level AAA</strong> requires a contrast ratio of at least <strong>7:1 for normal text</strong> and
+        4.5:1 for large text.<br>
+    </p>
+
+    <form>
+        <div class="color-picker-item">
+            <label for="background">background</label>
+            <input type="color" value="#000000" id="background">
+        </div>
+        <div class="color-picker-item">
+            <label for="text">text</label>
+            <input type="color" value="#ffffff" id="text">
+        </div>
+        <div class="color-picker-item">
+            <label for="primary">primary</label>
+            <input type="color" value="#676767" id="primary">
+        </div>
+        <div class="color-picker-item">
+            <label for="btnLabel">btnLabel</label>
+            <input type="color" value="#ffffff" id="btnLabel">
+        </div>
+        <div class="color-picker-item">
+            <label for="link">link</label>
+            <input type="color" value="#565656" id="link">
+        </div>
+
+    </form>
+
+    <div class="resultWrapper">
+      <div>
+          WCAG AA:
+        <ul id="ratioResult"></ul>
+      </div>
+      <div>
+          WCAG AAA:
+      <ul id="ratioResultAAA"></ul>
+      </div>
+    </div>
+
+    <div class="colorList">
+        <p class="text">
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+            dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet
+            clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+            consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
+            sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no
+            sea takimata sanctus est Lorem ipsum dolor sit amet.
+        </p>
+        <button class="primary">
+            Primary
+        </button>
+
+        <button class="secondary">
+            Secondary
+        </button>
+
+        <a href="#" class="link">
+            Link
+        </a>
+
+
+        <p>
+            Get AAA excellent color contrast schemes:<br>
+            <a href="https://www.sussex.ac.uk/tel/resource/tel_website/accessiblecontrast/" target="_blank">
+                sussex.ac.uk
+            </a>
+        </p>
+    </div>
+
+    <script>
+
+        //get initial colors from root style
+        let mainBg = getComputedStyle(document.documentElement).getPropertyValue('--main-bg').replace(/\s+/g, '');;
+        let text = getComputedStyle(document.documentElement).getPropertyValue('--text').replace(/\s+/g, '');;
+        let buttonBg = getComputedStyle(document.documentElement).getPropertyValue('--button-bg').replace(/\s+/g, '');;
+        let buttonText = getComputedStyle(document.documentElement).getPropertyValue('--button-text').replace(/\s+/g, '');;
+        let link = getComputedStyle(document.documentElement).getPropertyValue('--link').replace(/\s+/g, '');;
+
+        //set inital colors to inputs
+        document.getElementById("background").value = mainBg;
+        document.getElementById("text").value = text;
+        document.getElementById("primary").value = buttonBg;
+        document.getElementById("btnLabel").value = buttonText;
+        document.getElementById("link").value = link;
+
+
+        // set root properties onChange 
+        function setStyle(attribute, value) {
+            document.documentElement.style.setProperty(attribute, value);
+        }
+
+        // set color and check result
+
+        document.getElementById("background").addEventListener("change", function () {
+            setStyle('--main-bg', this.value);
+            checkContrast();
+        });
+
+        document.getElementById("text").addEventListener("change", function () {
+            setStyle('--text', this.value);
+            checkContrast();
+        });
+
+        document.getElementById("primary").addEventListener("change", function () {
+            setStyle('--button-bg', this.value);
+            checkContrast();
+        });
+
+        document.getElementById("btnLabel").addEventListener("change", function () {
+            setStyle('--button-text', this.value);
+            checkContrast();
+        });
+
+        document.getElementById("link").addEventListener("change", function () {
+            setStyle('--link', this.value);
+            checkContrast();
+        });
+
+        // initial contrastcheck
+        checkContrast();
+
+        // contrast checker
+        function checkContrast() {
+
+            var result = document.getElementById('ratioResult');
+            var resultAAA = document.getElementById('ratioResultAAA');
+
+            /*
+            there is an API https://webaim.org/resources/contrastchecker/?fcolor=FFFFFF&bcolor=545454&api
+            */
+
+            function hexToRgb(hex) {
+                // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+                var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+                hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+                    return r + r + g + g + b + b;
+                });
+
+                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : null;
+            }
+
+
+            const getLuminanace = (values) => {
+                const rgb = values.map((v) => {
+                    const val = v / 255;
+                    return val <= 0.03928 ? val / 12.92 : ((val + 0.055) / 1.055) ** 2.4;
+                });
+                return Number((0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]).toFixed(3));
+            };
+
+            const getContrastRatio = (colorA, colorB) => {
+                const lumA = getLuminanace(colorA);
+                const lumB = getLuminanace(colorB);
+
+                return (Math.max(lumA, lumB) + 0.05) / (Math.min(lumA, lumB) + 0.05);
+            };
+
+
+            const getRatioForElements = (color1, color2, title, resultList, level) => {
+
+                var ratio = Math.round(getContrastRatio(color1, color2) * 100) / 100;
+                var resultElement = document.createElement('li');
+
+                /*
+                WCAG AA:4.5
+                WCAG AAA:7
+                */
+                if (ratio >= level) {
+                    resultElement.innerHTML += title + ': Pass: ' + ratio + '<br>';
+                    resultElement.classList.add('pass');
+                    resultElement.classList.remove('fail');
+                } else {
+                    resultElement.innerHTML += title + ': Fail: ' + ratio + '<br>';
+                    resultElement.classList.add('fail');
+                    resultElement.classList.remove('pass');
+                }
+
+                resultList.append(resultElement);
+            }
+
+
+            // usage:
+            const back_color = Object.values(hexToRgb(document.getElementById("background").value));
+            const text_color = Object.values(hexToRgb(document.getElementById("text").value));
+            const button_color = Object.values(hexToRgb(document.getElementById("primary").value));
+            const button_label_color = Object.values(hexToRgb(document.getElementById("btnLabel").value));
+            const link_color = Object.values(hexToRgb(document.getElementById("link").value));
+
+            //reset message
+            result.innerHTML = '';
+            resultAAA.innerHTML = '';
+
+            //Add checks AA
+            getRatioForElements(back_color, text_color, "background and text", result, 4.5);
+            getRatioForElements(back_color, button_color, "background and button", result, 4.5);
+            getRatioForElements(button_color, button_label_color, "button and label", result, 4.5);
+            getRatioForElements(back_color, link_color, "background and link", result, 4.5);
+
+            //Add checks AAA
+            getRatioForElements(back_color, text_color, "background and text", resultAAA, 7);
+            getRatioForElements(back_color, button_color, "background and button", resultAAA, 7);
+            getRatioForElements(button_color, button_label_color, "button and label", resultAAA, 7);
+            getRatioForElements(back_color, link_color, "background and link", resultAAA, 7);
+
+        }
+
+    </script>
+
+    <body>
