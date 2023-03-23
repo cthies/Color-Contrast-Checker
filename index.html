@@ -70,6 +70,37 @@
             color: green;
         }
 
+        ul {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        ul::after {
+            position: absolute;
+            top: -20px;
+            left: 0;
+        }
+
+        .success-0::after {
+            content: '\2716 (0/4)';
+        }
+
+        .success-1::after {
+            content: '\2714 (1/4)';  
+        }
+
+       .success-2::after {
+            content: '\2714\2714 (2/4)';  
+        }
+
+        .success-3::after {
+            content: '\2714\2714\2714 (3/4)';  
+        }
+
+        .success-4::after {
+            content: '\2714\2714\2714\2714 (4/4)';  
+        }
+
+
         /*form colorPicker*/
         form {
             display: flex;
@@ -235,34 +266,34 @@
 
         document.getElementById("background").addEventListener("change", function () {
             setStyle('--main-bg', this.value);
-            checkContrast();
+            checkContrast(true);
         });
 
         document.getElementById("text").addEventListener("change", function () {
             setStyle('--text', this.value);
-            checkContrast();
+            checkContrast(true);
         });
 
         document.getElementById("primary").addEventListener("change", function () {
             setStyle('--button-bg', this.value);
-            checkContrast();
+            checkContrast(true);
         });
 
         document.getElementById("btnLabel").addEventListener("change", function () {
             setStyle('--button-text', this.value);
-            checkContrast();
+            checkContrast(true);
         });
 
         document.getElementById("link").addEventListener("change", function () {
             setStyle('--link', this.value);
-            checkContrast();
+            checkContrast(true);
         });
 
         // initial contrastcheck
         checkContrast();
 
         // contrast checker
-        function checkContrast() {
+        function checkContrast(showSuccess) {
 
             var result = document.getElementById('ratioResult');
             var resultAAA = document.getElementById('ratioResultAAA');
@@ -313,11 +344,11 @@
                 WCAG AAA:7
                 */
                 if (ratio >= level) {
-                    resultElement.innerHTML += title + ': Pass: ' + ratio + '<br>';
+                    resultElement.innerHTML += title + ': Passed: ' + ratio + '<br>';
                     resultElement.classList.add('pass');
                     resultElement.classList.remove('fail');
                 } else {
-                    resultElement.innerHTML += title + ': Fail: ' + ratio + '<br>';
+                    resultElement.innerHTML += title + ': Failed: ' + ratio + '<br>';
                     resultElement.classList.add('fail');
                     resultElement.classList.remove('pass');
                 }
@@ -336,6 +367,8 @@
             //reset message
             result.innerHTML = '';
             resultAAA.innerHTML = '';
+            result.classList = '';
+            resultAAA.classList = '';
 
             //Add checks AA
             getRatioForElements(back_color, text_color, "background and text", result, 4.5);
@@ -349,6 +382,14 @@
             getRatioForElements(button_color, button_label_color, "button and label", resultAAA, 7);
             getRatioForElements(back_color, link_color, "background and link", resultAAA, 7);
 
+            // show motivation if user changed the colors
+            if (showSuccess) {
+                let success = document.querySelectorAll("#ratioResult .pass").length;
+                result.classList.add('success-' + success);
+
+                let successAAA = document.querySelectorAll("#ratioResultAAA .pass").length;
+                resultAAA.classList.add('success-' + successAAA);
+            }
         }
 
     </script>
