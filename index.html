@@ -1,6 +1,9 @@
-<html>
-
+<html lang="en">
 <head>
+    <title>Color-Contrast-Checker</title>
+    <meta name="description" content="Check colorScheme for WCAG 2.0 level AA and AAA">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
         :root {
@@ -100,7 +103,6 @@
             content: '\2714\2714\2714\2714 (4/4)';  
         }
 
-
         /*form colorPicker*/
         form {
             display: flex;
@@ -110,50 +112,18 @@
         }
 
         .color-picker-item {
-            text-align: center;
             position: relative;
-            padding: 20px;
-            min-width: 130px;
+            padding: 0 10px 20px;
+            min-width: 90px;
         }
-
 
         .color-picker-item label {
-            position: relative;
-            z-index: 3;
-            -webkit-filter: invert(100%);
-            filter: invert(100%);
+            display: block;
         }
-
-        .color-picker-item:nth-child(1) label {
-            color: var(--main-bg);
-        }
-
-        .color-picker-item:nth-child(2) label {
-            color: var(--text);
-        }
-
-        .color-picker-item:nth-child(3) label {
-            color: var(--button-bg);
-        }
-
-        .color-picker-item:nth-child(4) label {
-            color: var(--button-text);
-        }
-
-        .color-picker-item:nth-child(5) label {
-            color: var(--link);
-        }
-
 
         .color-picker-item input {
-            margin: 0 15px;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            min-width: 48px;
+            min-height: 48px;
         }
 
         .resultWrapper {
@@ -387,9 +357,12 @@
                 let success = document.querySelectorAll("#ratioResult .pass").length;
                 result.classList.add('success-' + success);
 
+
                 let successAAA = document.querySelectorAll("#ratioResultAAA .pass").length;
                 resultAAA.classList.add('success-' + successAAA);
             }
+            
+
         }
 
     </script>
