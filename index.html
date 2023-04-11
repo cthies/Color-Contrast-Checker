@@ -7,11 +7,11 @@
 
     <style>
         :root {
-            --main-bg: #dddddd;
-            --text: #282c34;
-            --button-bg: #003b49;
-            --button-text: #d6d2c4;
-            --link: #5d3754;
+            --main-bg: #000000;
+            --text: #ebebeb;
+            --primary: #b1cdb1;
+            --button-text: #333;
+            --link: #cc8e24;
         }
 
         body {
@@ -26,7 +26,6 @@
             background: var(--main-bg);
             color: var(--text);
         }
-
 
         button {
             all: unset;
@@ -50,17 +49,17 @@
         }
 
         a:hover {
-            color: var(--button-bg);
+            color: var(--primary);
         }
 
         .primary {
-            background-color: var(--button-bg);
+            background-color: var(--primary);
             color: var(--button-text);
         }
 
 
         .secondary {
-            color: var(--button-bg);
+            color: var(--primary);
             background-color: var(--button-text);
         }
 
@@ -130,7 +129,65 @@
           display: flex;
           flex-wrap: wrap;
         }
-    </style>
+
+        /* color list */
+        .color-wrapper {
+        	position: relative;
+        	height: 300px;
+    	    max-width: 660px;
+        }
+
+        .color-box {
+    	    position: absolute;
+		    width: 100%;
+		    height: 100%;
+		    top: 0;
+		    left: 0;
+		    border: 1px dashed black;
+        }
+
+        .color-main-bg {
+        	background-color: var(--main-bg);
+        	width: 20%;
+		    height: 34%;
+		    top: 5%;
+		    left: 0;
+        }
+
+        .color-text {
+        	background-color: var(--text);
+    	    top: 42%;
+		    left: 0;
+		    height: 50%;
+		    width: 20%;
+        }
+
+        .color-primary {
+        	background-color: var(--primary);
+        	top: 0;
+			left: 22%;
+			height: 100%;
+			width: 40%;
+        }
+
+        .color-btn-label {
+        	background-color: var(--button-text);
+    	    top: 53%;
+		    left: 64%;
+		    height: 44%;
+		    width: 18%;
+		    z-index: 1;
+        }
+
+		.color-link {
+        	background-color: var(--link);
+    	    top: 4%;
+		    left: 64%;
+		    height: 47%;
+		    width: 32%;
+        }
+
+        </style>
 
 </head>
 
@@ -152,19 +209,19 @@
         </div>
         <div class="color-picker-item">
             <label for="text">text</label>
-            <input type="color" value="#ffffff" id="text">
+            <input type="color" value="#ebebeb" id="text">
         </div>
         <div class="color-picker-item">
             <label for="primary">primary</label>
-            <input type="color" value="#676767" id="primary">
+            <input type="color" value="#b1cdb1" id="primary">
         </div>
         <div class="color-picker-item">
             <label for="btnLabel">btnLabel</label>
-            <input type="color" value="#ffffff" id="btnLabel">
+            <input type="color" value="#333" id="btnLabel">
         </div>
         <div class="color-picker-item">
             <label for="link">link</label>
-            <input type="color" value="#565656" id="link">
+            <input type="color" value="#cc8e24" id="link">
         </div>
 
     </form>
@@ -179,6 +236,18 @@
       <ul id="ratioResultAAA"></ul>
       </div>
     </div>
+
+    <h2>ColorList</h2>
+
+    <div class="color-wrapper">
+	    <div class="color-box color-main-bg"></div>
+	     <div class="color-box color-text"></div>
+	     <div class="color-box color-primary"></div>
+	     <div class="color-box color-btn-label"></div>
+	    <div class="color-box color-link"></div>
+    </div>
+
+    <h3>Example</h3>
 
     <div class="colorList">
         <p class="text">
@@ -215,7 +284,7 @@
         //get initial colors from root style
         let mainBg = getComputedStyle(document.documentElement).getPropertyValue('--main-bg').replace(/\s+/g, '');;
         let text = getComputedStyle(document.documentElement).getPropertyValue('--text').replace(/\s+/g, '');;
-        let buttonBg = getComputedStyle(document.documentElement).getPropertyValue('--button-bg').replace(/\s+/g, '');;
+        let buttonBg = getComputedStyle(document.documentElement).getPropertyValue('--primary').replace(/\s+/g, '');;
         let buttonText = getComputedStyle(document.documentElement).getPropertyValue('--button-text').replace(/\s+/g, '');;
         let link = getComputedStyle(document.documentElement).getPropertyValue('--link').replace(/\s+/g, '');;
 
@@ -245,7 +314,7 @@
         });
 
         document.getElementById("primary").addEventListener("change", function () {
-            setStyle('--button-bg', this.value);
+            setStyle('--primary', this.value);
             checkContrast(true);
         });
 
